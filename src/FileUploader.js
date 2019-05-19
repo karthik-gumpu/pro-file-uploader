@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import R from 'ramda';
+import * as R from 'ramda';
 
 class FileUploader extends React.PureComponent {
 	componentDidMount() {
-		if (this.props.withDragAndDrop) {
+		if (this.props.withDrag) {
 			const dropzone = ReactDOM.findDOMNode(this);
 			if (dropzone) {
 				dropzone.addEventListener('dragenter', (e) => {
@@ -37,32 +37,28 @@ class FileUploader extends React.PureComponent {
 	}
 
 	onClick = () => {
-		if (this.props.clickToUpload) {
+		if (this.props.wichClick) {
 			this.inputRef.click();
 		}
 	}
 
-	onChange = (e) => {
-		this.processFiles(e.target.files);
-		this.inputRef.value = '';
-	}
-
 	getFileData = (file) => ({
-		name: file.name.split('.'),
-		ext: R.last(file.name.split('.')),
+		name: file.name,
+        ext: R.last(file.name.split('.')),
+        size: file.size,
 		content: file,
 	});
 
 	isValidFiles = (files) => {
-		const { allowedFileTypes } = this.props;
-		if (!allowedFileTypes || !allowedFileTypes.length) {
+		const { accept } = this.props;
+		if (!accept || !accept.length) {
 			return true;
 		}
 		for (let i = 0; i < files.length; i++) {
 			let foundValidFile = false;
 			const fileType = R.last(`${files[i].name}`.split('.'));
-			for (let j = 0; j < allowedFileTypes.length; j++) {
-				if (R.toLower(`.${fileType}`) === R.toLower(allowedFileTypes[j])) {
+			for (let j = 0; j < accept.length; j++) {
+				if (R.toLower(fileType) === R.toLower(accept[j])) {
 					foundValidFile = true;
 					break;
 				}
@@ -82,12 +78,21 @@ class FileUploader extends React.PureComponent {
         const allFiles = [];
 		for (let i = 0; i < files.length; i++) {
             allFiles.push(this.getFileData(files[i]))
-		}
-        this.props.onChange(allFiles);
+        }
+        if(this.props.multiple) {
+            this.props.onChange(allFiles);
+        } else  {
+            this.props.onChange(allFiles[0]);
+        }
 	}
 
+    onChange = (e) => {
+		this.processFiles(e.target.files);
+		this.inputRef.value = '';
+    }
+
 	render() {
-		const { allowedFileTypes } = this.props;
+		const { accept } = this.props;
 		return (
 			<React.Fragment>
 				{
@@ -95,8 +100,9 @@ class FileUploader extends React.PureComponent {
 				}
 				<input
 					ref={(inputRef) => { this.inputRef = inputRef; }}
-					type="file"
-					accept={allowedFileTypes ? `${allowedFileTypes.join(',')}` : null}
+                    type="file"
+                    multiple={this.props.multiple}
+					accept={accept ? `${accept.join(',')}` : null}
 					onChange={this.onChange}
 					style={{ display: 'none' }}
 				/>
@@ -106,17 +112,19 @@ class FileUploader extends React.PureComponent {
 }
 
 FileUploader.defaultProps = {
-	withDragAndDrop: true,
-    clickToUpload: true,
+	withDrag: true,
+    wichClick: true,
+    onError: () => null,
 };
 
 FileUploader.propTypes = {
-	withDragAndDrop: PropTypes.bool,
-	clickToUpload: PropTypes.bool,
-	onChange: PropTypes.func,
+	withDrag: PropTypes.bool,
+	wichClick: PropTypes.bool,
+	onChange: PropTypes.func.isRequired,
 	onError: PropTypes.func,
-	allowedFileTypes: PropTypes.any,
+	accept: PropTypes.any,
     browseType: PropTypes.any,
+    multiple: PropTypes.bool,
 };
 
 export default FileUploader;

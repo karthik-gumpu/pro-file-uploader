@@ -1,68 +1,94 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# pro-file-picker
 
-## Available Scripts
+> Reusable React file picker component.
 
-In the project directory, you can run:
+[![Travis][build-badge]][build]
+[![Codecov Status][codecov-badge]][codecov]
+[![npm package][npm-badge]][npm]
+[![npm downloads][npm-downloads]][npm]
 
-### `npm start`
+[![prettier][prettier-badge]][prettier]
+[![license][license-badge]][license]
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Installation
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+```sh
+$ npm install pro-file-uploader
+```
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Usage
 
-### `npm run build`
+```js
+import FilePicker from 'pro-file-picker';
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<FilePicker onChange={files => console.log(files)}>
+  <button>Upload</button>
+</FilePicker>;
+```
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## API
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```js
+type Props = {
+  children: React.Node,
+  onChange: (files: Array<File>, e: SyntheticEvent<HTMLInputElement>) => void,
+  accept?: string,
+  multiple?: boolean,
+};
+```
 
-### `npm run eject`
+## Development
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Requirements
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- node >= 11.9.0
+- yarn >= 1.13.0
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```sh
+$ yarn install --pure-lockfile
+$ yarn start
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Test
 
-## Learn More
+```sh
+$ yarn run format
+$ yarn run eslint
+$ yarn run flow
+$ yarn run test:watch
+$ yarn run build
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Publish
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+$ npm version patch
+$ npm run changelog
+git commit & push
+```
 
-### Code Splitting
+---
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## CONTRIBUTING
 
-### Analyzing the Bundle Size
+- ⇄ Pull requests and ★ Stars are always welcome.
+- For bugs and feature requests, please create an issue.
+- Pull requests must be accompanied by passing automated tests.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
 
-### Making a Progressive Web App
+## [LICENSE](LICENSE)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+MIT: [http://michaelhsu.mit-license.org](http://michaelhsu.mit-license.org)
 
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+[build-badge]: https://img.shields.io/travis/evenchange4/react-input-files/master.svg?style=flat-square
+[build]: https://travis-ci.org/evenchange4/react-input-files
+[npm-badge]: https://img.shields.io/npm/v/react-input-files.svg?style=flat-square
+[npm]: https://www.npmjs.org/package/react-input-files
+[codecov-badge]: https://img.shields.io/codecov/c/github/evenchange4/react-input-files.svg?style=flat-square
+[codecov]: https://codecov.io/github/evenchange4/react-input-files?branch=master
+[npm-downloads]: https://img.shields.io/npm/dt/react-input-files.svg?style=flat-square
+[license-badge]: https://img.shields.io/npm/l/react-input-files.svg?style=flat-square
+[license]: http://michaelhsu.mit-license.org/
+[prettier-badge]: https://img.shields.io/badge/styled_with-prettier-ff69b4.svg?style=flat-square
+[prettier]: https://github.com/prettier/prettier
